@@ -1,0 +1,210 @@
+{
+  "version": "v1",
+  "service": "soulcore-qclaw-skill",
+  "endpoints": [
+    {
+      "name": "chat",
+      "method": "POST",
+      "path": "/v1/chat",
+      "request": {
+        "session_id": "string",
+        "user_id": "string",
+        "input": "string",
+        "persona_id": "string",
+        "memory_top_k": 6,
+        "options": {
+          "enable_memory": true,
+          "enable_persona_guard": true,
+          "temperature": 0.7
+        }
+      },
+      "response": {
+        "reply": "string",
+        "intent": "string",
+        "used_memories": [
+          {
+            "memory_id": "string",
+            "score": 0.92,
+            "reason": "string"
+          }
+        ],
+        "persona_alignment": {
+          "score": 0.88,
+          "flags": [
+            "string"
+          ]
+        },
+        "trace_id": "string"
+      }
+    },
+    {
+      "name": "memory.write",
+      "method": "POST",
+      "path": "/v1/memory/write",
+      "request": {
+        "user_id": "string",
+        "content": "string",
+        "tags": [
+          "string"
+        ],
+        "importance": 0.75,
+        "source": "chat|system|import",
+        "pinned": false
+      },
+      "response": {
+        "memory_id": "string",
+        "stored": true
+      }
+    },
+    {
+      "name": "memory.recall",
+      "method": "POST",
+      "path": "/v1/memory/recall",
+      "request": {
+        "user_id": "string",
+        "query": "string",
+        "top_k": 6
+      },
+      "response": {
+        "hits": [
+          {
+            "memory_id": "string",
+            "content": "string",
+            "score": 0.9,
+            "tags": [
+              "string"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "health",
+      "method": "GET",
+      "path": "/v1/health",
+      "request": {},
+      "response": {
+        "ok": true,
+        "service": "soulcore-qclaw-skill",
+        "version": "v1",
+        "llm_enabled": false,
+        "db_path": "string",
+        "ts": 1760000000
+      }
+    },
+    {
+      "name": "memory.list",
+      "method": "GET",
+      "path": "/v1/memory/list?user_id={user_id}&limit=20&offset=0",
+      "request": {},
+      "response": {
+        "total": 12,
+        "items": [
+          {
+            "memory_id": "string",
+            "content": "string",
+            "tags": [
+              "string"
+            ],
+            "importance": 0.8,
+            "pinned": false,
+            "hit_count": 3,
+            "updated_at": 1760000000
+          }
+        ]
+      }
+    },
+    {
+      "name": "memory.delete",
+      "method": "POST",
+      "path": "/v1/memory/delete",
+      "request": {
+        "user_id": "string",
+        "memory_id": "string"
+      },
+      "response": {
+        "deleted": true
+      }
+    },
+    {
+      "name": "memory.export",
+      "method": "GET",
+      "path": "/v1/memory/export?user_id={user_id}",
+      "request": {},
+      "response": {
+        "total": 2,
+        "items": [
+          {
+            "memory_id": "string",
+            "user_id": "string",
+            "content": "string",
+            "tags": [
+              "string"
+            ],
+            "importance": 0.9,
+            "pinned": true,
+            "source": "import",
+            "hit_count": 5,
+            "created_at": 1760000000,
+            "updated_at": 1760000010
+          }
+        ]
+      }
+    },
+    {
+      "name": "memory.import",
+      "method": "POST",
+      "path": "/v1/memory/import",
+      "request": {
+        "items": [
+          {
+            "user_id": "string",
+            "content": "string",
+            "tags": [
+              "string"
+            ],
+            "importance": 0.8,
+            "pinned": false,
+            "source": "import",
+            "hit_count": 0,
+            "created_at": 1760000000,
+            "updated_at": 1760000010
+          }
+        ]
+      },
+      "response": {
+        "imported": 1,
+        "merged": 0
+      }
+    },
+    {
+      "name": "memory.pin",
+      "method": "POST",
+      "path": "/v1/memory/pin",
+      "request": {
+        "user_id": "string",
+        "memory_id": "string",
+        "pinned": true
+      },
+      "response": {
+        "updated": true
+      }
+    },
+    {
+      "name": "diagnostics.last",
+      "method": "GET",
+      "path": "/v1/diagnostics/last?session_id={session_id}",
+      "request": {},
+      "response": {
+        "trace_id": "string",
+        "input_summary": "string",
+        "reply_summary": "string",
+        "memory_candidates": 12,
+        "memory_used": 4,
+        "persona_alignment": 0.88,
+        "latency_ms": 320
+      }
+    }
+  ]
+}
+
