@@ -1,0 +1,7 @@
+{
+  "name": "SoulCore.Editor",
+  "rootNamespace": "SoulCore.Editor",
+  "includePlatforms": [ "Editor" ],
+  "references": [ "SoulCore.Runtime" ],
+  "autoReferenced": true
+}

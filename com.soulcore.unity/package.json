@@ -1,0 +1,17 @@
+{
+  "name": "com.soulcore.unity",
+  "version": "1.3.1",
+  "displayName": "意识流魂核 (Unity 2022.3 / 团结 1.8.x 共用)",
+  "description": "同一包双渠道：团结版 UI/文案默认全中文；Unity 国际版可在 Project Settings → Soul Core 魂核 切换中/英（Editor+PlayerPrefs）。内核 2022.3 LTS。",
+  "unity": "2022.3",
+  "keywords": [ "ai", "npc", "tuanjie", "unity", "魂核", "团结", "意识流" ],
+  "author": { "name": "SoulCore" },
+  "dependencies": {},
+  "samples": [
+    {
+      "displayName": "基础输入演示",
+      "description": "BasicDemoInput（键盘 1/2/3）+ DialogPerceiveUiExample（InputField/按钮接 Perceive）。需拖 NPC 与 UI 引用。",
+      "path": "Samples~/BasicDemo"
+    }
+  ]
+}
