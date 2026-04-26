@@ -55,6 +55,19 @@ python -m uvicorn server.app:app --host 127.0.0.1 --port 8000 --reload
 
 ### 1) 启动服务
 
+- 一键启动（Windows 双击）：
+
+```text
+qclaw-skill/start_local.bat
+```
+
+- 一键启动（PowerShell）：
+
+```powershell
+cd qclaw-skill
+.\start_local.ps1 -Mode noauth
+```
+
 - 无鉴权模式（本地调试）：
 
 ```powershell

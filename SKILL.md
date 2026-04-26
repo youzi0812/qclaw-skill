@@ -21,6 +21,11 @@ Primary detailed docs:
 - Local default: `http://127.0.0.1:8000`
 - Replace with deployed URL in cloud environments.
 
+For local-first users, start backend with:
+
+- `qclaw-skill/start_local.bat` (Windows double-click)
+- or `qclaw-skill/start_local.ps1 -Mode noauth`
+
 ## Auth Rule
 
 - If `GET /v1/health` returns `auth_enabled=false`, no `x-api-key` needed.
