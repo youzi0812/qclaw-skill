@@ -1,0 +1,88 @@
+name: Bug Report
+description: 反馈安装/启动/调用报错（请附日志）
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请尽量完整填写以下信息，尤其是**终端完整报错日志**。
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: 问题类型
+      description: 请选择最接近的问题类型
+      options:
+        - 安装失败（npx skills add）
+        - 启动失败（quick_start/start_local）
+        - 接口调用失败（health/chat/memory）
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境信息
+      description: 系统、终端、Node/Python 版本等
+      placeholder: |
+        - OS: Windows 10
+        - Shell: cmd / PowerShell
+        - Node: vxx
+        - Python: 3.x
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 请按顺序写出你执行了什么命令/操作
+      placeholder: |
+        1. 执行 npx skills add ...
+        2. 双击 quick_start.bat
+        3. 看到报错 ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+      placeholder: 你原本预期发生什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+      placeholder: 实际发生了什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 终端完整日志（必填）
+      description: 请粘贴完整日志，建议用代码块 ``` 包裹
+      render: shell
+      placeholder: |
+        粘贴完整报错日志（不要只截最后一行）
+    validations:
+      required: true
+
+  - type: textarea
+    id: health
+    attributes:
+      label: Health 接口返回（可选）
+      description: 若服务已启动，请粘贴 /v1/health 返回
+      render: json
+      placeholder: |
+        {
+          "ok": true
+        }
+    validations:
+      required: false
