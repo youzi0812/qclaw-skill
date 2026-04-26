@@ -14,6 +14,7 @@
 - `server/app.py`：FastAPI 最小服务（MVP）
 - `demo/demo_requests.py`：本地演示调用脚本
 - `data/memory.db`：运行后自动创建的 SQLite 数据库
+- `../qclaw-thin-skill/`：可选薄 Skill 层（`SKILL.md` + `references/api_spec.md`）
 
 ## MVP 范围（第一阶段）
 
@@ -49,6 +50,58 @@ cd qclaw-skill
 python -m pip install -r requirements.txt
 python -m uvicorn server.app:app --host 127.0.0.1 --port 8000 --reload
 ```
+
+## 使用说明（推荐流程）
+
+### 1) 启动服务
+
+- 无鉴权模式（本地调试）：
+
+```powershell
+cd qclaw-skill
+python -m uvicorn server.app:app --host 127.0.0.1 --port 8000
+```
+
+- 鉴权模式（对外联调）：
+
+```powershell
+cd qclaw-skill
+$env:SOULCORE_API_KEY="your-api-key"
+python -m uvicorn server.app:app --host 127.0.0.1 --port 8000
+```
+
+### 2) 验证服务状态
+
+```bash
+GET /v1/health
+```
+
+重点字段：
+
+- `ok`：服务是否可用
+- `llm_enabled`：是否启用远端 LLM
+- `auth_enabled`：是否启用 API Key 鉴权
+
+### 3) 执行检查
+
+- 快速检查（推荐每次改动后先跑）：
+
+```powershell
+python demo/smoke_check.py
+```
+
+- 完整检查（自动启动服务 + smoke + 单测 + 全链路演示）：
+
+```powershell
+.\run_local_check.ps1
+```
+
+### 4) 常见调用路径
+
+1. 写入偏好：`POST /v1/memory/write`
+2. 触发对话：`POST /v1/chat`
+3. 查看诊断：`GET /v1/diagnostics/last?session_id=...`
+4. 管理记忆：`GET /v1/memory/list` / `POST /v1/memory/pin` / `POST /v1/memory/delete`
 
 另开一个终端运行 Demo：
 
