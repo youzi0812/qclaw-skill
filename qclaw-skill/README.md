@@ -161,3 +161,32 @@ set SOULCORE_API_KEY=你的密钥
 }
 ```
 
+## 发布启动建议（鉴权与否）
+
+### 方案 A：不启用鉴权（内网联调/快速演示）
+
+```powershell
+cd qclaw-skill
+python -m uvicorn server.app:app --host 127.0.0.1 --port 8000
+```
+
+### 方案 B：启用鉴权（推荐对外服务）
+
+```powershell
+cd qclaw-skill
+$env:SOULCORE_API_KEY="your-api-key"
+python -m uvicorn server.app:app --host 127.0.0.1 --port 8000
+```
+
+客户端调用时必须带请求头：
+
+```text
+x-api-key: your-api-key
+```
+
+可通过健康接口确认当前是否启用鉴权（`auth_enabled` 字段）：
+
+```bash
+GET /v1/health
+```
+

@@ -760,6 +760,7 @@ def health() -> dict:
         "service": "soulcore-qclaw-skill",
         "version": "v1",
         "llm_enabled": LLM.enabled,
+        "auth_enabled": bool(API_KEY),
         "db_path": DB_PATH,
         "ts": int(time.time()),
     }
