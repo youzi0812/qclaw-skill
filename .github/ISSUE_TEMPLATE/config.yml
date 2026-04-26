@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 使用说明（本地快速上手）
+    url: https://github.com/youzi0812/qclaw-skill/blob/main/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.md
+    about: 提交问题前请先按使用说明检查本地启动和端口状态。
