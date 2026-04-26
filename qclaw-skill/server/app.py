@@ -8,7 +8,9 @@ from typing import List, Optional
 from urllib import request as urlrequest
 from urllib.error import URLError, HTTPError
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 
@@ -27,6 +29,7 @@ class LlmConfig:
 
 
 LLM = LlmConfig()
+API_KEY = os.getenv("SOULCORE_API_KEY", "").strip()
 
 
 def _ensure_db() -> None:
@@ -310,6 +313,53 @@ class MemoryImportResponse(BaseModel):
 
 app = FastAPI(title="SoulCore QClaw Skill API", version="v1")
 _ensure_db()
+
+
+def _error_response(code: str, message: str, status_code: int, details: Optional[dict] = None) -> JSONResponse:
+    payload = {
+        "ok": False,
+        "error": {
+            "code": code,
+            "message": message,
+        },
+    }
+    if details:
+        payload["error"]["details"] = details
+    return JSONResponse(status_code=status_code, content=payload)
+
+
+@app.middleware("http")
+async def auth_middleware(request: Request, call_next):
+    path = request.url.path or ""
+    # health 保持免鉴权，便于探活与本地连通性检查
+    if API_KEY and path.startswith("/v1") and path != "/v1/health":
+        provided = (request.headers.get("x-api-key") or "").strip()
+        if not provided:
+            return _error_response("AUTH_MISSING_API_KEY", "Missing x-api-key header", 401)
+        if provided != API_KEY:
+            return _error_response("AUTH_INVALID_API_KEY", "Invalid API key", 401)
+    return await call_next(request)
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(_: Request, exc: HTTPException):
+    message = str(exc.detail) if exc.detail else "HTTP error"
+    return _error_response("HTTP_ERROR", message, int(exc.status_code))
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(_: Request, exc: RequestValidationError):
+    return _error_response(
+        "VALIDATION_ERROR",
+        "Request validation failed",
+        422,
+        details={"issues": exc.errors()},
+    )
+
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(_: Request, __: Exception):
+    return _error_response("INTERNAL_ERROR", "Internal server error", 500)
 
 
 def _list_user_memories(user_id: str) -> list[sqlite3.Row]:

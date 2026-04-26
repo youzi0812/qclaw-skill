@@ -64,6 +64,46 @@ cd qclaw-skill
 python demo/demo_v4_manage.py
 ```
 
+全链路联调演示脚本（health/chat/diagnostics/export/import）：
+
+```bash
+cd qclaw-skill
+python demo/demo_e2e_full.py
+```
+
+快速烟雾检查（失败返回非 0，适合 CI）：
+
+```bash
+cd qclaw-skill
+python demo/smoke_check.py
+```
+
+GitHub Actions 已提供最小自动验收工作流：
+
+- `.github/workflows/qclaw-skill-smoke.yml`
+- 触发条件：`main` 分支 push、相关 PR、手动触发
+
+## 本地单元测试
+
+```bash
+cd qclaw-skill
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+## 一键本地检查（PowerShell）
+
+在 `qclaw-skill` 目录执行：
+
+```powershell
+.\run_local_check.ps1
+```
+
+鉴权模式：
+
+```powershell
+.\run_local_check.ps1 -Mode auth -ApiKey "demo-key"
+```
+
 ## 新增接口（交付收尾）
 
 - `GET /v1/health`：服务健康检查
@@ -99,4 +139,25 @@ set SOULCORE_LLM_TIMEOUT_SECONDS=20
 
 - 只要设置了 `SOULCORE_LLM_BASE_URL`，即视为启用远端模型。
 - 远端调用失败会自动回退到本地模板回复，不会中断接口。
+
+## 接口鉴权（可选）
+
+默认不配置时，不启用鉴权。  
+设置以下环境变量后，除 `GET /v1/health` 外的接口都需要请求头 `x-api-key`：
+
+```bash
+set SOULCORE_API_KEY=你的密钥
+```
+
+统一错误响应结构示例：
+
+```json
+{
+  "ok": false,
+  "error": {
+    "code": "AUTH_INVALID_API_KEY",
+    "message": "Invalid API key"
+  }
+}
+```
 

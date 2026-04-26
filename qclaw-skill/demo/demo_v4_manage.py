@@ -1,9 +1,18 @@
 import json
+import os
 from urllib import request
 
 
 BASE = "http://127.0.0.1:8000"
 USER_ID = "demo-user"
+API_KEY = os.getenv("SOULCORE_API_KEY", "").strip()
+
+
+def _headers() -> dict:
+    headers = {"Content-Type": "application/json"}
+    if API_KEY:
+        headers["x-api-key"] = API_KEY
+    return headers
 
 
 def post(path: str, payload: dict) -> dict:
@@ -11,14 +20,15 @@ def post(path: str, payload: dict) -> dict:
         BASE + path,
         method="POST",
         data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
+        headers=_headers(),
     )
     with request.urlopen(req, timeout=10) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
 def get(path: str) -> dict:
-    with request.urlopen(BASE + path, timeout=10) as resp:
+    req = request.Request(BASE + path, method="GET", headers=_headers())
+    with request.urlopen(req, timeout=10) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
