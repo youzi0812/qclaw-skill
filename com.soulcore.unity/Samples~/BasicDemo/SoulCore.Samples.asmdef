@@ -1,7 +1,0 @@
-{
-  "name": "SoulCore.Samples",
-  "rootNamespace": "SoulCore.Samples",
-  "references": [ "SoulCore.Runtime", "Unity.UGUI", "Unity.TextMeshPro" ],
-  "includePlatforms": [],
-  "defineConstraints": []
-}

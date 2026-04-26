@@ -1,7 +1,0 @@
-{
-  "name": "SoulCore.Runtime",
-  "rootNamespace": "SoulCore",
-  "references": [],
-  "includePlatforms": [],
-  "autoReferenced": true
-}
